@@ -9,7 +9,8 @@ class Footprint(db.Model):
     transport_mode = db.Column(db.String(100))
     num_passengers = db.Column(db.Integer)
     distance = db.Column(db.Integer)
-    carbon = db.Column(db.Integer)
+    carbon_grams = db.Column(db.Integer)
+    carbon_tons = db.Column(db.Integer)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     profile_id = db.Column(db.Integer, db.ForeignKey('profiles.id'))
 
