@@ -15,20 +15,28 @@ footprints = Blueprint('footprints', 'footprints')
 @login_required
 def createFootprint():
   data = request.get_json()
-  print("data: ", data)
   start = data["start"]
   stop = data["stop"]
   transport_mode = data["transport_mode"]
-  numPassengers = data["numPassengers"]
-  # data.headers['Access-Control-Allow-Origin'] = '*'
-  url = f"https://klimaat.app/api/v1/calculate?start={start}&end={stop}&transport_mode={transport_mode}&num_passengers={numPassengers}{API_KEY}"
-  print(url)
+  num_passengers = data["numPassengers"]
+  url = f"https://klimaat.app/api/v1/calculate?start={start}&end={stop}&transport_mode={transport_mode}&num_passengers={num_passengers}{API_KEY}"
   footprintResponse = urllib.request.urlopen(url)
-  footprintData = footprintResponse.read()
-  print(footprintData)
+  footprintData = json.loads(footprintResponse.read())
+  print("footprintData: ", footprintData)
   profile = read_token(request)
-  data["profile_id"] = profile["id"]
-  # footprint = Footprint(**data)
+  footprint = {
+    "start": data["start"],
+    "stop": data["stop"],
+    "transport_mode": data["transport_mode"],
+    "num_passengers": data["numPassengers"],
+    "distance": footprintData["data"]["distance"]["miles"],
+    "carbon_grams": footprintData["data"]["carbon_footprint"]["grams"]["total"],
+    "carbon_tons": footprintData["data"]["carbon_footprint"]["tons"]["total"],
+    "profile_id": profile["id"]
+  }
+  print("footprint: ", footprint)
+  
+  # footprint = Footprint(**footprintData)
   # db.session.add(footprint)
   # db.session.commit()
-  # return jsonify(footprintData.serialize()), 201
+  return jsonify(footprint.serialize()), 201
