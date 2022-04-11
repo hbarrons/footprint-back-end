@@ -10,14 +10,16 @@ API_KEY = os.getenv('API_KEY')
 
 footprints = Blueprint('footprints', 'footprints')
 
-@footprints.route('/', methods=["GET"])
-# @login_required
+@footprints.route('/', methods=["POST"])
+@login_required
 def getFootprint():
-  url = f"https://klimaat.app/api/v1/calculate?start=48208&end=90210&transport_mode=driving&num_passengers=1{API_KEY}"
-  print(url)
-  response = urllib.request.urlopen(url)
-  data = response.read()
-  print(data)
+  data = request.get_json()
+  print("request data: ", data)
+  # url = f"https://klimaat.app/api/v1/calculate?start=48208&end=90210&transport_mode=driving&num_passengers=1{API_KEY}"
+  # print(url)
+  # response = urllib.request.urlopen(url)
+  # data = response.read()
+  # print(data)
   # data = request.get_json()
   # profile = read_token(request)
   # data["profile_id"] = profile["id"]
@@ -25,5 +27,3 @@ def getFootprint():
   # db.session.add(footprint)
   # db.session.commit()
   # return jsonify(footprint.serialize()), 201
-
-getFootprint()
