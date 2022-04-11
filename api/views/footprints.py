@@ -1,4 +1,5 @@
 from flask import Flask, Blueprint, jsonify, request
+from flask_cors import CORS
 from api.middleware import login_required, read_token
 import os
 import urllib.request, json
@@ -12,18 +13,22 @@ footprints = Blueprint('footprints', 'footprints')
 
 @footprints.route('/', methods=["POST"])
 @login_required
-def getFootprint():
+def createFootprint():
   data = request.get_json()
-  print("request data: ", data)
-  # url = f"https://klimaat.app/api/v1/calculate?start=48208&end=90210&transport_mode=driving&num_passengers=1{API_KEY}"
-  # print(url)
-  # response = urllib.request.urlopen(url)
-  # data = response.read()
-  # print(data)
-  # data = request.get_json()
-  # profile = read_token(request)
-  # data["profile_id"] = profile["id"]
+  print("data: ", data)
+  start = data["start"]
+  stop = data["stop"]
+  transport_mode = data["transport_mode"]
+  numPassengers = data["numPassengers"]
+  # data.headers['Access-Control-Allow-Origin'] = '*'
+  url = f"https://klimaat.app/api/v1/calculate?start={start}&end={stop}&transport_mode={transport_mode}&num_passengers={numPassengers}{API_KEY}"
+  print(url)
+  footprintResponse = urllib.request.urlopen(url)
+  footprintData = footprintResponse.read()
+  print(footprintData)
+  profile = read_token(request)
+  data["profile_id"] = profile["id"]
   # footprint = Footprint(**data)
   # db.session.add(footprint)
   # db.session.commit()
-  # return jsonify(footprint.serialize()), 201
+  # return jsonify(footprintData.serialize()), 201
