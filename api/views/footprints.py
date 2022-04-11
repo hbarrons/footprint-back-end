@@ -22,7 +22,6 @@ def createFootprint():
   url = f"https://klimaat.app/api/v1/calculate?start={start}&end={stop}&transport_mode={transport_mode}&num_passengers={num_passengers}{API_KEY}"
   footprintResponse = urllib.request.urlopen(url)
   footprintData = json.loads(footprintResponse.read())
-  print("footprintData: ", footprintData)
   profile = read_token(request)
   footprint = {
     "start": data["start"],
@@ -34,7 +33,6 @@ def createFootprint():
     "carbon_tons": footprintData["data"]["carbon_footprint"]["tons"]["total"],
     "profile_id": profile["id"]
   }
-  print("footprint: ", footprintData["data"]["carbon_footprint"]["tons"]["total"])
   footprintDb = Footprint(**footprint)
   db.session.add(footprintDb)
   db.session.commit()
@@ -42,6 +40,5 @@ def createFootprint():
 
 @footprints.route('/', methods=["GET"])
 def index():
-  print("Query All: ", Footprint.query.all())
   footprints = Footprint.query.all()
   return jsonify([footprint.serialize() for footprint in footprints]), 201
