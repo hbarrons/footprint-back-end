@@ -26,7 +26,7 @@ def createFootprint():
   profile = read_token(request)
   footprint = {
     "start": data["start"],
-    "stop": data["stop"],
+    "end": data["stop"],
     "transport_mode": data["transport_mode"],
     "num_passengers": data["numPassengers"],
     "distance": footprintData["data"]["distance"]["miles"],
@@ -35,8 +35,7 @@ def createFootprint():
     "profile_id": profile["id"]
   }
   print("footprint: ", footprint)
-  
-  # footprint = Footprint(**footprintData)
-  # db.session.add(footprint)
-  # db.session.commit()
+  footprintDb = Footprint(**footprint)
+  db.session.add(footprintDb)
+  db.session.commit()
   return jsonify(footprint.serialize()), 201
