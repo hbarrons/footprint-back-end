@@ -42,3 +42,16 @@ def createFootprint():
 def index():
   footprints = Footprint.query.all()
   return jsonify([footprint.serialize() for footprint in footprints]), 201
+
+@footprints.route('/delete/<id>', methods=["DELETE"])
+@login_required
+def delete(id):
+  profile = read_token(request)
+  footprint = Footprint.query.filter_by(id=id).first()
+  
+  if footprint.profile_id != profile["id"]:
+    return 'Forbidden', 403
+  
+  db.session.delete(footprint)
+  db.session.commit()
+  return jsonify(message="Success"), 200
