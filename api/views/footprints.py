@@ -29,8 +29,8 @@ def createFootprint():
     "transport_mode": data["transport_mode"],
     "num_passengers": data["numPassengers"],
     "distance": footprintData["data"]["distance"]["miles"],
-    "carbon_grams": footprintData["data"]["carbon_footprint"]["grams"]["total"],
-    "carbon_tons": footprintData["data"]["carbon_footprint"]["tons"]["total"],
+    "carbon_grams": str(int(footprintData["data"]["carbon_footprint"]["grams"]["total"])//int(data["numPassengers"])),
+    "carbon_tons": str(int(footprintData["data"]["carbon_footprint"]["tons"]["total"])//int(data["numPassengers"])),
     "profile_id": profile["id"]
   }
   footprintDb = Footprint(**footprint)
