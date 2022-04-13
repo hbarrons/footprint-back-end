@@ -81,13 +81,17 @@ def update(id):
     "profile_id": profile["id"]
   }
   footprint = Footprint.query.filter_by(id=id).first()
-  print("footprint: ", footprint)
+  footprint.start = data["start"]
+  footprint.end = data["stop"]
+  footprint.transport_mode = data["transport_mode"]
+  footprint.num_passengers = data["numPassengers"]
+  footprint.distance = footprintData["data"]["distance"]["miles"]
+  footprint.carbon_grams = str(int(footprintData["data"]["carbon_footprint"]["grams"]["total"])//int(data["numPassengers"]))
+  footprint.carbon_tons = str(int(footprintData["data"]["carbon_footprint"]["tons"]["total"])//int(data["numPassengers"]))
+  footprint.profile_id = profile["id"]
 
   if updatedFootprint["profile_id"] != profile["id"]:
     return 'Forbidden', 403
-
-  for key in footprint:
-    setattr(footprint, key, updatedFootprint[key])
 
   db.session.commit()
   return jsonify(updatedFootprint), 200
