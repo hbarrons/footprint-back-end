@@ -55,3 +55,21 @@ def delete(id):
   db.session.delete(footprint)
   db.session.commit()
   return jsonify(message="Success"), 200
+
+@footprints.route('/update/<id>', methods=["PUT"])
+@login_required
+def update(id):
+  data = request.get_json()
+  print(data)
+  profile = read_token(request)
+  footprint = Footprint.query.filter_by(id=id).first()
+  print(footprint)
+
+  if footprint.profile_id != profile["id"]:
+    return 'Forbidden', 403
+
+  for key in data:
+    setattr(footprint, key, data[key])
+
+  db.session.commit()
+  return jsonify(footprint.serialize()), 200
