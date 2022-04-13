@@ -59,17 +59,35 @@ def delete(id):
 @footprints.route('/update/<id>', methods=["PUT"])
 @login_required
 def update(id):
-  data = request.get_json()
-  print(data)
   profile = read_token(request)
+  data = request.get_json()
+  print("data: ", data)
+  print("id: ", id)
+  start = data["start"]
+  stop = data["stop"]
+  transport_mode = data["transport_mode"]
+  num_passengers = data["numPassengers"]
+  url = f"https://klimaat.app/api/v1/calculate?start={start}&end={stop}&transport_mode={transport_mode}&num_passengers={num_passengers}{API_KEY}"
+  footprintResponse = urllib.request.urlopen(url)
+  footprintData = json.loads(footprintResponse.read())
+  updatedFootprint = {
+    "start": data["start"],
+    "end": data["stop"],
+    "transport_mode": data["transport_mode"],
+    "num_passengers": data["numPassengers"],
+    "distance": footprintData["data"]["distance"]["miles"],
+    "carbon_grams": str(int(footprintData["data"]["carbon_footprint"]["grams"]["total"])//int(data["numPassengers"])),
+    "carbon_tons": str(int(footprintData["data"]["carbon_footprint"]["tons"]["total"])//int(data["numPassengers"])),
+    "profile_id": profile["id"]
+  }
   footprint = Footprint.query.filter_by(id=id).first()
-  print(footprint)
+  print("footprint: ", footprint)
 
-  if footprint.profile_id != profile["id"]:
+  if updatedFootprint["profile_id"] != profile["id"]:
     return 'Forbidden', 403
 
-  for key in data:
-    setattr(footprint, key, data[key])
+  for key in footprint:
+    setattr(footprint, key, updatedFootprint[key])
 
   db.session.commit()
-  return jsonify(footprint.serialize()), 200
+  return jsonify(updatedFootprint), 200
