@@ -7,7 +7,7 @@ Before becoming a developer I spent 7 years working in the Environemtnal/Sustain
 
 Footprint was built using Python/Flask/PostgreSQL for the server-side and React/JavaScript for the client-side.
 
-** This project is part of a decoupled full stack application. The backend code can be found [here](https://github.com/hbarrons/footprint-back-end)
+** This project is part of a decoupled full stack application. The frontend code can be found [here](https://github.com/hbarrons/footprint-front-end)
 
 ## Home Screen
 
