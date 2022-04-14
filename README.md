@@ -3,7 +3,7 @@
 Check it out [here](https://myfootprint.netlify.app/)!
 
 ## Objective
-Before becoming a developer I spent 7 years working in the Environemtnal/Sustainability field and I always knew that I wanted to build a project that bridged the gap between the two industries. That's where Footprint comes in - Footprint allows users to see their overall carbon footprint by log their commutes. Users simply enter the starting/ending ZIP code, the method of transportation, and the number of passengers and Footprint uses that data to make an API call to [Klimaat](https://klimaat.app/) in order to calculate emmissions.
+Before becoming a developer I spent 7 years working in the Environemtnal/Sustainability field and I always knew that I wanted to build a project that bridged both industries. That's where Footprint comes in - Footprint allows users to see their overall carbon footprint by logging their commutes. Users simply enter the starting/ending ZIP code, the method of transportation, and the number of passengers and Footprint uses that data to make an API call to [Klimaat](https://klimaat.app/) in order to calculate emmissions. Footprint allows users to get a better understand the environmental impact of their commute and how different modes of transportation can help minimze their carbon footprint and create a cleaner environment.
 
 Footprint was built using Python/Flask/PostgreSQL for the server-side and React/JavaScript for the client-side.
 
@@ -18,8 +18,11 @@ Footprint was built using Python/Flask/PostgreSQL for the server-side and React/
 
 ## Future Enhancements
 - Add a page with emmission data for common activities in order to provide a larger context to each users Footprint
+- Add input field for Commute Date
+- Research API options to add exact addresses and public transportation option
 - Dark Mode
 - Populate Edit Footprint Form with current values
+
 
 ## Credits
 - [Klimaat API](https://klimaat.app/)
